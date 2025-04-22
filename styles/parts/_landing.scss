@@ -6,6 +6,45 @@ body {
 .container {
     height: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
+}
+
+.btn__container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+    margin-right: 107px;
+    margin-bottom: 40px;
+
+    .add-book-btn {
+        padding: 7px 10px;
+    }
+}
+
+.library__container {
+    width: 100%;
+
+}
+
+.library {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 75px;
+    padding: 0 135px;
+
+    &__item {
+        position: relative;
+        border: 1px solid black;
+        padding: 50px 0;
+        text-align: center;
+
+        &__close-btn {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+        }
+    }
 }

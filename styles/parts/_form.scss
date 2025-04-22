@@ -1,3 +1,17 @@
+.dialog {
+    width: 13%;
+
+    h1 {
+        margin-bottom: 15px;
+    }
+
+    .close-btn {
+        position: absolute;
+        right: 19px;
+        top: 14px;
+    }
+}
+
 .dialog[open] {
     
 }
@@ -9,3 +23,25 @@
 .dialog::backdrop {
     background: #2d2d2d93;
 }
+
+.form {
+    display: flex;
+    flex-direction: column;
+
+    input {
+        padding: 2px 0;
+    }
+
+    label {
+        margin-bottom: 3px;
+    }
+
+    #read {
+        margin-bottom: 15px;
+    }
+
+    .form-btn {
+        padding: 10px 0;
+    }
+}
+
