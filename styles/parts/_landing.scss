@@ -41,10 +41,29 @@ body {
         padding: 50px 0;
         text-align: center;
 
-        &__close-btn {
+        &__delete-btn {
             position: absolute;
             top: 12px;
             right: 15px;
+            height: 30px;
+            width: 32px;
+
+            svg {
+                color: red;
+                margin-left: -1px;
+            }
+        }
+
+        &__read-btn {
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            height: 30px;
+            width: 32px;
+
+            svg {
+
+            }
         }
     }
 }

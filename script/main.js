@@ -1,14 +1,12 @@
 import '../styles/style.scss';
 
-const myLibrary = [
-    {title: 'Na livadi divnoj', author: 'Lepi Stevdza', pages: 304, read: 'Have read it', id: '29083098-dlskdd-ws9923-sdsss'},
-    {title: 'Pevaj Golube', author: 'Dzigi', pages: 124, read: 'Didnt read it', id: '9839837-hjhh-sbsxb-97867'},
-    {title: 'Ko to tamo stenje', author: 'Savo Dzigljavi', pages: 324, read: 'Didnt read it', id: '829430-jhbmjm-huhhh-79987'},
-    {title: 'Egzotika', author: 'Miloje Slepi', pages: 24, read: 'Didnt read it', id: '8987678-jhjhh-88888-0000'},
-    {title: 'Mile prasuma', author: 'Dve Dangube', pages: 499, read: 'Have read it', id: 'kjhkjds-29883-dkjdfkj-22222'},
-    {title: 'Tvoja mama', author: 'Zoran Dzindzic', pages: 543, read: 'Have read it', id: '2222- sjhsjh-1111-0000'}
+const testObj1 = new Book('Na livadi divnoj', 'Lepi Stevdza', 304, false);
+const testObj2 = new Book('Pevaj Goblube', 'Dzigi', 124, true);
+const testObj3 = new Book('Ko to tamo stenje', 'Savo Dzigljavi', 324, true);
 
-];
+const myLibrary = [];
+
+myLibrary.push(testObj1, testObj2, testObj3);
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -24,7 +22,7 @@ function addBookToLibrary(event) {
     const title = document.getElementById('name').value;
     const author = document.getElementById('author').value;
     const pages = document.getElementById('pages').value;
-    const read = document.getElementById('read').value;
+    const read = document.getElementById('read').checked;
     
     const newBook = new Book(title, author, pages, read);
     
@@ -41,13 +39,17 @@ function addElement(book) {
     newLI.classList.add('library__item');
     newLI.setAttribute('data-id', book.id);
 
+    const newReadBtn = document.createElement('button');
+    newReadBtn.textContent = `📖`;
+    newReadBtn.classList.add('library__item__read-btn');
+
     const newCloseBtn = document.createElement('button');
     newCloseBtn.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 6h18v2H3V6zm2 3h14v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V9zm3 2v9h2v-9H8zm4 0v9h2v-9h-2zm4 0v9h2v-9h-2z"/>
         </svg>
     `;
-    newCloseBtn.classList.add('library__item__close-btn');
+    newCloseBtn.classList.add('library__item__delete-btn');
 
     const newTitle = document.createElement('h2');
     newTitle.textContent = book.title;
@@ -62,11 +64,11 @@ function addElement(book) {
     newPages.classList.add('library__item__pages')
 
     const newRead = document.createElement('p');
-    newRead.textContent = book.read;
+    newRead.textContent = book.read ? "I have read the book." : "I haven't read the book yet.";
     newRead.classList.add('library__item__read');
 
     parentContainer.append(newLI);
-    newLI.append(newCloseBtn, newTitle, newAuthor, newPages, newRead);
+    newLI.append(newReadBtn, newCloseBtn, newTitle, newAuthor, newPages, newRead);
 }
 
 // === DOM SELECTORS === //
@@ -81,12 +83,13 @@ addBookBtn.addEventListener('click', () => dialog.showModal());
 closeBtn.addEventListener('click', () => dialog.close());
 form.addEventListener('submit', addBookToLibrary);
 libraryContainer.addEventListener('click', deleteElement);
+libraryContainer.addEventListener('click', toggleReadStatus);
 
 function deleteElement(event) { 
-    const button = event.target.closest('button');
     const liElement = event.target.closest('.library__item');
+    const button = event.target.closest('.library__item__delete-btn');
     
-    if (!button || !liElement) return;
+    if (!liElement || !button) return;
 
     const liElementID = liElement.dataset.id;
 
@@ -99,6 +102,27 @@ function deleteElement(event) {
     } else {
         throw new Error('Element not found in an array!');
     }
+}
+
+function toggleReadStatus(event) {
+    const li = event.target.closest('.library__item');
+    const button = event.target.closest('button.library__item__read-btn');
+
+    if (!li || !button) return;
+
+    const liID = li.getAttribute('data-id');
+    const readPara = li.querySelector('.library__item__read');
+
+    for (const obj of myLibrary) {
+        if (obj.id === liID) {
+            obj.toggleObjectReadStatus();
+            readPara.textContent = obj.read ? "I have read the book." : "I haven't read the book yet.";
+        }
+    }
+}
+
+Book.prototype.toggleObjectReadStatus = function() {
+    this.read = this.read ? false : true;
 }
 
 function renderLibrary() {
