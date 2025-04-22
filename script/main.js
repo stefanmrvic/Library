@@ -112,13 +112,12 @@ function toggleReadStatus(event) {
 
     const liID = li.getAttribute('data-id');
     const readPara = li.querySelector('.library__item__read');
+    const book = myLibrary.find((book) => book.id === liID);
 
-    for (const obj of myLibrary) {
-        if (obj.id === liID) {
-            obj.toggleObjectReadStatus();
-            readPara.textContent = obj.read ? "I have read the book." : "I haven't read the book yet.";
-        }
-    }
+    if (!book || !readPara) return; 
+
+    book.toggleObjectReadStatus();
+    readPara.textContent = book.read ? "I have read the book." : "I haven't read the book yet.";
 }
 
 Book.prototype.toggleObjectReadStatus = function() {
