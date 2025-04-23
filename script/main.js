@@ -16,6 +16,26 @@ function Book(title, author, pages, read) {
     this.id = crypto.randomUUID();
 }
 
+Book.prototype.toggleObjectReadStatus = function() {
+    this.read = this.read ? false : true;
+}
+
+function toggleReadStatus(event) {
+    const li = event.target.closest('.library__item');
+    const button = event.target.closest('button.library__item__read-btn');
+
+    if (!li || !button) return;
+
+    const liID = li.getAttribute('data-id');
+    const readPara = li.querySelector('.library__item__read');
+    const book = myLibrary.find((book) => book.id === liID);
+
+    if (!book || !readPara) return; 
+
+    book.toggleObjectReadStatus();
+    readPara.textContent = book.read ? "I have read the book." : "I haven't read the book yet.";
+}
+
 function addBookToLibrary(event) {
     event.preventDefault();
 
@@ -110,44 +130,16 @@ function deleteElement(event) {
     }
 }
 
-function toggleReadStatus(event) {
-    const li = event.target.closest('.library__item');
-    const button = event.target.closest('button.library__item__read-btn');
-
-    if (!li || !button) return;
-
-    const liID = li.getAttribute('data-id');
-    const readPara = li.querySelector('.library__item__read');
-    const book = myLibrary.find((book) => book.id === liID);
-
-    if (!book || !readPara) return; 
-
-    book.toggleObjectReadStatus();
-    readPara.textContent = book.read ? "I have read the book." : "I haven't read the book yet.";
-}
-
-Book.prototype.toggleObjectReadStatus = function() {
-    this.read = this.read ? false : true;
-}
-
 function renderLibrary() {
-    const liBookElements = document.querySelectorAll('.library__item');
-
+    const bookElements = [...document.querySelectorAll('.library__item')];
+    const domIDs = bookElements.map((book) => book.dataset.id);
+    
     for (const obj of myLibrary) {
         if (!obj.id) {
-            throw new Error(`Element in array doesn't have an ID!`);
+            throw new Error(`Element in an array doesn't have an ID!`);
         }
 
-        const objectID = obj.id;
-        let newObject = true;
-
-        for (const element of liBookElements) {
-            if (element.dataset.id === objectID) {
-                newObject = false;
-            }
-        }
-
-        if (newObject) {
+        if (!domIDs.includes(obj.id)) {
             addElement(obj);
         }
     }
