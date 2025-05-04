@@ -1,24 +1,26 @@
 import '../styles/style.scss';
 
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+        this.id = crypto.randomUUID();
+    }
+    
+    toggleObjectReadStatus = function() {
+        this.read = this.read ? false : true;
+    }
+    
+}
+
 const testObj1 = new Book('Na livadi divnoj', 'Lepi Stevdza', 304, false);
 const testObj2 = new Book('Pevaj Goblube', 'Dzigi', 124, true);
 const testObj3 = new Book('Ko to tamo stenje', 'Savo Dzigljavi', 324, true);
 
 const myLibrary = [];
-
 myLibrary.push(testObj1, testObj2, testObj3);
-
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.id = crypto.randomUUID();
-}
-
-Book.prototype.toggleObjectReadStatus = function() {
-    this.read = this.read ? false : true;
-}
 
 function toggleReadStatus(event) {
     const li = event.target.closest('.library__item');
