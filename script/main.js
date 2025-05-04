@@ -9,7 +9,7 @@ class Book {
         this.id = crypto.randomUUID();
     }
     
-    toggleObjectReadStatus = function() {
+    toggleObjectReadStatus() {
         this.read = this.read ? false : true;
     }
     
