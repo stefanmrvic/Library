@@ -1,4 +1,4 @@
-import '../styles/style.scss';
+import './styles/style.scss';
 
 const testObj1 = new Book('Na livadi divnoj', 'Lepi Stevdza', 304, false);
 const testObj2 = new Book('Pevaj Goblube', 'Dzigi', 124, true);
@@ -16,9 +16,9 @@ function Book(title, author, pages, read) {
     this.id = crypto.randomUUID();
 }
 
-Book.prototype.toggleObjectReadStatus = function() {
+Book.prototype.toggleObjectReadStatus = function () {
     this.read = this.read ? false : true;
-}
+};
 
 function toggleReadStatus(event) {
     const li = event.target.closest('.library__item');
@@ -30,10 +30,12 @@ function toggleReadStatus(event) {
     const readPara = li.querySelector('.library__item__read');
     const book = myLibrary.find((book) => book.id === liID);
 
-    if (!book || !readPara) return; 
+    if (!book || !readPara) return;
 
     book.toggleObjectReadStatus();
-    readPara.textContent = book.read ? "I have read the book." : "I haven't read the book yet.";
+    readPara.textContent = book.read
+        ? 'I have read the book.'
+        : "I haven't read the book yet.";
 }
 
 function addBookToLibrary(event) {
@@ -44,15 +46,17 @@ function addBookToLibrary(event) {
     const pages = document.getElementById('pages').value.trim();
     const read = document.getElementById('read').checked;
 
-    const duplicate = myLibrary.find((book) => book.title === title && book.author === author);
+    const duplicate = myLibrary.find(
+        (book) => book.title === title && book.author === author
+    );
 
     if (duplicate) {
         alert(`The book already exists!\n         (you donkey)`);
         return;
     }
-    
+
     const newBook = new Book(title, author, pages, read);
-    
+
     myLibrary.push(newBook);
     addElement(newBook);
     form.reset();
@@ -87,14 +91,23 @@ function addElement(book) {
 
     const newPages = document.createElement('p');
     newPages.textContent = book.pages;
-    newPages.classList.add('library__item__pages')
+    newPages.classList.add('library__item__pages');
 
     const newRead = document.createElement('p');
-    newRead.textContent = book.read ? "I have read the book." : "I haven't read the book yet.";
+    newRead.textContent = book.read
+        ? 'I have read the book.'
+        : "I haven't read the book yet.";
     newRead.classList.add('library__item__read');
 
     parentContainer.append(newLI);
-    newLI.append(newReadBtn, newCloseBtn, newTitle, newAuthor, newPages, newRead);
+    newLI.append(
+        newReadBtn,
+        newCloseBtn,
+        newTitle,
+        newAuthor,
+        newPages,
+        newRead
+    );
 }
 
 // === DOM SELECTORS === //
@@ -111,15 +124,15 @@ form.addEventListener('submit', addBookToLibrary);
 libraryContainer.addEventListener('click', deleteElement);
 libraryContainer.addEventListener('click', toggleReadStatus);
 
-function deleteElement(event) { 
+function deleteElement(event) {
     const liElement = event.target.closest('.library__item');
     const button = event.target.closest('.library__item__delete-btn');
-    
+
     if (!liElement || !button) return;
 
     const liElementID = liElement.dataset.id;
 
-    // Checks if the desired element for deletion exists in the myLibrary array & gets its index 
+    // Checks if the desired element for deletion exists in the myLibrary array & gets its index
     const index = myLibrary.findIndex((book) => book.id === liElementID);
 
     if (index !== -1) {
@@ -133,7 +146,7 @@ function deleteElement(event) {
 function renderLibrary() {
     const bookElements = [...document.querySelectorAll('.library__item')];
     const domIDs = bookElements.map((book) => book.dataset.id);
-    
+
     for (const obj of myLibrary) {
         if (!obj.id) {
             throw new Error(`Element in an array doesn't have an ID!`);
